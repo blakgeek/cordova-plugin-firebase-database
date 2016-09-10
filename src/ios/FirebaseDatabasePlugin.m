@@ -7,11 +7,30 @@
 
 - (void)initialize:(CDVInvokedUrlCommand *)command {
 
+    BOOL enablePersistence = [[command argumentAtIndex:0] boolValue];
+
     if (![FIRApp defaultApp]) {
         [FIRApp configure];
     }
     self.database = [FIRDatabase database];
+    [self.database setPersistenceEnabled:enablePersistence];
     self.observerRemovers = [NSMutableDictionary dictionary];
+}
+
+- (void)setOnline:(CDVInvokedUrlCommand *)command {
+
+    BOOL enabled = [[command argumentAtIndex:0] boolValue];
+    if (enabled) {
+        [self.database goOnline];
+    } else {
+        [self.database goOffline];
+    }
+}
+
+- (void)setLoggingEnabled:(CDVInvokedUrlCommand *)command {
+
+    BOOL enabled = [[command argumentAtIndex:0] boolValue];
+    [FIRDatabase setLoggingEnabled:enabled];
 }
 
 - (void)push:(CDVInvokedUrlCommand *)command {
@@ -25,8 +44,8 @@
         if (error) {
 
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
-                    @"code" : @(error.code),
-                    @"message" : error.description
+                    @"code": @(error.code),
+                    @"message": error.description
             }];
         } else {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"%@/%@", path, [ref key]]];
@@ -46,8 +65,8 @@
         if (error) {
 
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
-                    @"code" : @(error.code),
-                    @"message" : error.description
+                    @"code": @(error.code),
+                    @"message": error.description
             }];
         } else {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
@@ -67,8 +86,8 @@
         if (error) {
 
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
-                    @"code" : @(error.code),
-                    @"message" : error.description
+                    @"code": @(error.code),
+                    @"message": error.description
             }];
         } else {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:path];
@@ -87,8 +106,8 @@
         if (error) {
 
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
-                    @"code" : @(error.code),
-                    @"message" : error.description
+                    @"code": @(error.code),
+                    @"message": error.description
             }];
         } else {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -121,8 +140,8 @@
     }                      withCancelBlock:^(NSError *_Nonnull error) {
 
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
-                @"code" : @(error.code),
-                @"message" : error.description
+                @"code": @(error.code),
+                @"message": error.description
         }];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
@@ -152,17 +171,16 @@
         CDVPluginResult *pluginResult = [self snapshotToResult:snapshot];
         [pluginResult setKeepCallbackAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    }              withCancelBlock:^(NSError *error) {
+    }                                         withCancelBlock:^(NSError *error) {
 
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{
-                @"code" : @(error.code),
-                @"message" : error.description
+                @"code": @(error.code),
+                @"message": error.description
         }];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 
     [self.observerRemovers setObject:[ObserverRemover observerRemoverWithQuery:query andHandle:handle] forKey:key];
-    NSLog(@"listeners removers: %@", self.observerRemovers);
 }
 
 - (void)off:(CDVInvokedUrlCommand *)command {

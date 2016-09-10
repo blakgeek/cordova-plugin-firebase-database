@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
@@ -56,9 +57,33 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
                 return remove(args, callbackContext);
             case "push":
                 return push(args, callbackContext);
+            case "setOnline":
+                return setOnline(args);
+            case "setLoggingEnabled":
+                return setLoggingEnabled(args);
             default:
                 return false;
         }
+    }
+
+    private boolean setLoggingEnabled(JSONArray args) {
+
+        if(args.optBoolean(0, false)) {
+            database.setLogLevel(Logger.Level.DEBUG);
+        } else {
+            database.setLogLevel(Logger.Level.NONE);
+        }
+        return true;
+    }
+
+    private boolean setOnline(JSONArray args) {
+
+        if(args.optBoolean(0, false)) {
+            database.goOnline();
+        } else {
+            database.goOffline();
+        }
+        return true;
     }
 
     private Object toSettable(Object value) {
@@ -389,6 +414,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
     private boolean initialize(JSONArray args, CallbackContext callbackContext) {
 
+        database.setPersistenceEnabled(args.optBoolean(0, false));
         eventContext = callbackContext;
         return true;
     }

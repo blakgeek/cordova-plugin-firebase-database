@@ -12,6 +12,8 @@
 - (void)set:(CDVInvokedUrlCommand *)command;
 - (void)update:(CDVInvokedUrlCommand *)command;
 - (void)remove:(CDVInvokedUrlCommand *)command;
+- (void)setOnline:(CDVInvokedUrlCommand *)command;
+- (void)setLoggingEnabled:(CDVInvokedUrlCommand *)command;
 
 @property(strong) NSString *eventCallbackId;
 @property(strong) FIRDatabase *database;
