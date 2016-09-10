@@ -1,0 +1,23 @@
+{
+  "name": "cordova-plugin-firebase-database",
+  "version": "1.0.0",
+  "description": "Adds native support for Firebase's realtime database to Cordova/Phonegap apps.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blakgeek/cordova-plugin-firebase-database.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "firebase",
+    "datbase",
+    "realtime"
+  ],
+  "author": "Carlos \"blakgeek\" Lawton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blakgeek/cordova-plugin-firebase-database/issues"
+  },
+  "homepage": "https://github.com/blakgeek/cordova-plugin-firebase-database"
+}
