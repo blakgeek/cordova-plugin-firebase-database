@@ -64,8 +64,9 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
     private Object toSettable(Object value) {
 
         Object result = value;
-        if(value instanceof JSONObject) {
-            Type type = new TypeToken<Map<String, Object>>(){}.getType();
+        if (value instanceof JSONObject) {
+            Type type = new TypeToken<Map<String, Object>>() {
+            }.getType();
             result = new Gson().fromJson(value.toString(), type);
         }
 
@@ -81,8 +82,8 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                if(databaseError != null) {
-                    callbackContext.sendPluginResult(convertToPluginResult(PluginResult.Status.ERROR, databaseError, false));
+                if (databaseError != null) {
+                    callbackContext.sendPluginResult(convertToPluginResult(databaseError, false));
                 } else {
                     callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, path + '/' + databaseReference.getKey()));
                 }
@@ -99,8 +100,8 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                if(databaseError != null) {
-                    callbackContext.sendPluginResult(convertToPluginResult(PluginResult.Status.ERROR, databaseError, false));
+                if (databaseError != null) {
+                    callbackContext.sendPluginResult(convertToPluginResult(databaseError, false));
                 } else {
                     callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, path));
                 }
@@ -118,8 +119,8 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                if(databaseError != null) {
-                    callbackContext.sendPluginResult(convertToPluginResult(PluginResult.Status.ERROR, databaseError, false));
+                if (databaseError != null) {
+                    callbackContext.sendPluginResult(convertToPluginResult(databaseError, false));
                 } else {
                     callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, path));
                 }
@@ -132,15 +133,16 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
         final String path = args.optString(0);
         JSONObject rawValue = args.optJSONObject(1);
-        Type type = new TypeToken<Map<String, Object>>(){}.getType();
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
         Map<String, Object> value = new Gson().fromJson(rawValue.toString(), type);
 
         database.getReference(path).updateChildren(value, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
 
-                if(databaseError != null) {
-                    callbackContext.sendPluginResult(convertToPluginResult(PluginResult.Status.ERROR, databaseError, false));
+                if (databaseError != null) {
+                    callbackContext.sendPluginResult(convertToPluginResult(databaseError, false));
                 } else {
                     callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, path));
                 }
@@ -153,7 +155,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
         String id = args.optString(0);
 
-        if(listeners.containsKey(id)) {
+        if (listeners.containsKey(id)) {
 
             listeners.remove(id).remove();
         }
@@ -177,7 +179,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
-                    PluginResult errorResult = convertToPluginResult(PluginResult.Status.ERROR, databaseError, false);
+                    PluginResult errorResult = convertToPluginResult(databaseError, false);
                     callbackContext.sendPluginResult(errorResult);
                 }
             };
@@ -225,7 +227,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
-                    PluginResult errorResult = convertToPluginResult(PluginResult.Status.ERROR, databaseError, false);
+                    PluginResult errorResult = convertToPluginResult(databaseError, false);
                     callbackContext.sendPluginResult(errorResult);
                 }
             };
@@ -249,7 +251,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                PluginResult errorResult = convertToPluginResult(PluginResult.Status.ERROR, databaseError, false);
+                PluginResult errorResult = convertToPluginResult(databaseError, false);
                 callbackContext.sendPluginResult(errorResult);
             }
         });
@@ -276,11 +278,11 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
         Query limitedQuery = query;
 
-        if(first > 0) {
+        if (first > 0) {
             limitedQuery = limitedQuery.limitToFirst(first);
         }
 
-        if(last > 0) {
+        if (last > 0) {
             limitedQuery = limitedQuery.limitToLast(last);
         }
 
@@ -345,6 +347,23 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
         }
     }
 
+    private PluginResult convertToPluginResult(DatabaseError error, boolean reusable) {
+
+        JSONObject data = null;
+        try {
+            data.put("code", error.getCode());
+            data.put("message", error.getMessage());
+            data.put("details", error.getDetails());
+        } catch (JSONException e) {
+
+        }
+
+        PluginResult result = new PluginResult(PluginResult.Status.ERROR, data);
+        result.setKeepCallback(reusable);
+
+        return result;
+    }
+
     private PluginResult convertToPluginResult(PluginResult.Status status, Object value, boolean reusable) {
 
         JSONObject data = null;
@@ -404,6 +423,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
         private Query query;
         private ChildEventListener listener;
+
         public ChildListenerRemover(Query query, ChildEventListener listener) {
 
             this.query = query;
@@ -421,6 +441,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
         private Query query;
         private ValueEventListener listener;
+
         public ValueListenerRemover(Query query, ValueEventListener listener) {
 
             this.query = query;
