@@ -14,5 +14,5 @@
 - (void)remove:(CDVInvokedUrlCommand *)command;
 
 @property(strong, nonatomic) NSString *eventCallbackId;
-@property(strong, nonatomic) FIRDatabaseReference *dbRef;
+@property(strong, nonatomic) FIRDatabase *database;
 @end
