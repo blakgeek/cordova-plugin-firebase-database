@@ -13,6 +13,7 @@
 - (void)update:(CDVInvokedUrlCommand *)command;
 - (void)remove:(CDVInvokedUrlCommand *)command;
 
-@property(strong, nonatomic) NSString *eventCallbackId;
-@property(strong, nonatomic) FIRDatabase *database;
+@property(strong) NSString *eventCallbackId;
+@property(strong) FIRDatabase *database;
+@property(strong) NSMutableDictionary *observerRemovers;
 @end

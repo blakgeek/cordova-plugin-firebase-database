@@ -1,5 +1,7 @@
 #import "FirebaseDatabasePlugin.h"
+#import "ObserverRemover.h"
 @import Firebase;
+
 
 @implementation FirebaseDatabasePlugin
 
@@ -9,6 +11,7 @@
         [FIRApp configure];
     }
     self.database = [FIRDatabase database];
+    self.observerRemovers = [NSMutableDictionary dictionary];
 }
 
 - (void)push:(CDVInvokedUrlCommand *)command {
@@ -123,7 +126,6 @@
         }];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
-
 }
 
 - (void)on:(CDVInvokedUrlCommand *)command {
@@ -135,7 +137,7 @@
     NSNumber *limitToFirst = [command argumentAtIndex:4 withDefault:nil andClass:[NSNumber class]];
     NSNumber *limitToLast = [command argumentAtIndex:5 withDefault:nil andClass:[NSNumber class]];
     FIRDataEventType type = [self stringToType:[command argumentAtIndex:6 withDefault:@"value" andClass:[NSString class]]];
-    NSString *id = [command argumentAtIndex:7 withDefault:nil andClass:[NSString class]];
+    NSString *key = [command argumentAtIndex:7 withDefault:nil andClass:[NSString class]];
 
 
     FIRDatabaseReference *ref = [self.database.reference child:path];
@@ -143,7 +145,7 @@
     FIRDatabaseQuery *filteredQuery = [self filterQuery:query withFilters:filters];
     FIRDatabaseQuery *limitedQuery = [self limitQuery:query toFirst:limitToFirst andLast:limitToLast];
 
-    [limitedQuery observeEventType:type withBlock:^(FIRDataSnapshot *_Nonnull snapshot) {
+    FIRDatabaseHandle handle = [limitedQuery observeEventType:type withBlock:^(FIRDataSnapshot *_Nonnull snapshot) {
 
         [snapshot value];
         NSDictionary *result;
@@ -158,11 +160,17 @@
         }];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
+
+    [self.observerRemovers setObject:[ObserverRemover observerRemoverWithQuery:query andHandle:handle] forKey:key];
+    NSLog(@"listeners removers: %@", self.observerRemovers);
 }
 
 - (void)off:(CDVInvokedUrlCommand *)command {
 
-    [[self.database reference] removeAllObservers];
+    NSString *key = [command argumentAtIndex:0 withDefault:nil andClass:[NSString class]];
+    ObserverRemover *remover = self.observerRemovers[key];
+    [remover remove];
+    [self.observerRemovers removeObjectForKey:key];
 }
 
 - (FIRDatabaseQuery *)limitQuery:query toFirst:(NSNumber *)limitToFirst andLast:(NSNumber *)limitToLast {
@@ -181,16 +189,16 @@
 - (FIRDatabaseQuery *)filterQuery:query withFilters:filters {
 
     FIRDatabaseQuery *result = query;
-    if ([filters objectForKey:@"equalTo"]) {
-        result = [result queryEqualToValue:[filters objectForKey:@"equalTo"]];
+    if (filters[@"equalTo"]) {
+        result = [result queryEqualToValue:filters[@"equalTo"]];
     }
 
-    if ([filters objectForKey:@"startAt"]) {
-        result = [result queryStartingAtValue:[filters objectForKey:@"equalTo"]];
+    if (filters[@"startAt"]) {
+        result = [result queryStartingAtValue:filters[@"equalTo"]];
     }
 
-    if ([filters objectForKey:@"endAt"]) {
-        result = [result queryEndingAtValue:[filters objectForKey:@"equalTo"]];
+    if (filters[@"endAt"]) {
+        result = [result queryEndingAtValue:filters[@"equalTo"]];
     }
 
     return result;

@@ -9,7 +9,7 @@
     <repo>https://github.com/blakgeek/cordova-plugin-firebase-database.git</repo>
     <issue>https://github.com/blakgeek/cordova-plugin-firebase-database/issues</issue>
 
-    <js-module src="www/plugin.js" name="FirebaseDatabasePlugin">
+    <js-module src="www/firebaseDatabasePlugin.js" name="FirebaseDatabasePlugin">
         <clobbers target="FirebaseDatabase" />
     </js-module>
 
@@ -29,6 +29,8 @@
         </config-file>
         <header-file src="src/ios/FirebaseDatabasePlugin.h" />
         <source-file src="src/ios/FirebaseDatabasePlugin.m" />
+        <source-file src="src/ios/ObserverRemover.h" />
+        <source-file src="src/ios/ObserverRemover.m" />
         <pod id="Firebase/Database" />
     </platform>
 
