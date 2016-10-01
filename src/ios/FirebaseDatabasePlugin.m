@@ -195,10 +195,10 @@
 
     FIRDatabaseQuery *result = query;
     if (limitToFirst) {
-        result = [result queryLimitedToFirst:limitToFirst];
+        result = [result queryLimitedToFirst:[limitToFirst integerValue]];
     }
     if (limitToLast) {
-        result = [result queryLimitedToLast:limitToLast];
+        result = [result queryLimitedToLast:[limitToLast integerValue]];
     }
 
     return result;
