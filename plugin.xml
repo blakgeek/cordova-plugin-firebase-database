@@ -44,7 +44,7 @@
         <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseDatabasePlugin.java"
             target-dir="src/com/blakgeek/cordova/plugin/" />
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference" />
-        <framework src="com.google.firebase:firebase-database:9+" />
+        <framework src="com.google.firebase:firebase-database:9.4+" />
         <framework src="com.google.code.gson:gson:2+"/>
     </platform>
 </plugin>
