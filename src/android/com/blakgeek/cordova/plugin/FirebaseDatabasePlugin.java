@@ -374,7 +374,7 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
     private PluginResult convertToPluginResult(DatabaseError error, boolean reusable) {
 
-        JSONObject data = null;
+        JSONObject data = new JSONObject();
         try {
             data.put("code", error.getCode());
             data.put("message", error.getMessage());
@@ -391,12 +391,21 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
     private PluginResult convertToPluginResult(PluginResult.Status status, Object value, boolean reusable) {
 
+        PluginResult result;
         JSONObject data = null;
-        try {
-            data = new JSONObject(new Gson().toJson(value));
-        } catch (JSONException e) {
+
+        if(value != null) {
+            try {
+                data = new JSONObject(new Gson().toJson(value));
+            } catch (JSONException e) {
+            }
         }
-        PluginResult result = new PluginResult(status, data);
+
+        if(data != null) {
+             result = new PluginResult(status, data);
+        } else {
+            result = new PluginResult(status, (String) null);
+        }
         result.setKeepCallback(reusable);
 
         return result;
