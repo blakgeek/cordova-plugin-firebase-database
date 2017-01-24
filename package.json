@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-firebase-database",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Adds native support for Firebase's realtime database to Cordova/Phonegap apps.",
   "repository": {
     "type": "git",
