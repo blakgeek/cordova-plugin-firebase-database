@@ -1,9 +1,5 @@
 package com.blakgeek.cordova.plugin;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +20,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseDatabasePlugin extends CordovaPlugin {
