@@ -391,21 +391,36 @@ public class FirebaseDatabasePlugin extends CordovaPlugin {
 
     private PluginResult convertToPluginResult(PluginResult.Status status, Object value, boolean reusable) {
 
-        PluginResult result;
-        JSONObject data = null;
+        PluginResult result = null;
 
         if(value != null) {
             try {
-                data = new JSONObject(new Gson().toJson(value));
+                if (value instanceof String) {
+                    result = new PluginResult(status, (String) value);
+                } else if (value instanceof Integer) {
+                    result = new PluginResult(status, (Integer) value);
+                } else if (value instanceof Long) {
+                    result = new PluginResult(status, (Long) value);
+                } else if (value instanceof Double) {
+                    result = new PluginResult(status, ((Double) value).floatValue());
+                } else if (value instanceof Float) {
+                    result = new PluginResult(status, (Float) value);
+                } else if (value instanceof Boolean) {
+                    result = new PluginResult(status, (Boolean) value);
+                } else if (value instanceof List) {
+                    result = new PluginResult(status, new JSONArray(new Gson().toJson(value)));
+                } else {
+                    result = new PluginResult(status, new JSONObject(new Gson().toJson(value)));
+                }
             } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
-        if(data != null) {
-             result = new PluginResult(status, data);
-        } else {
+        if(result == null) {
             result = new PluginResult(status, (String) null);
         }
+
         result.setKeepCallback(reusable);
 
         return result;
