@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-firebase-database" version="1.0.0">
+    id="cordova-plugin-firebase-database" version="1.0.2">
     <name>Firebase Realtime Database</name>
     <description>Adds native support for Firebase's realtime database to your Cordova/PhoneGap apps.</description>
     <license>Apache 2.0</license>
@@ -35,6 +35,9 @@
     </platform>
 
     <platform name="android">
+
+        <preference name="FIREBASE_VERSION" default="18.+"/>
+
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseDatabasePlugin">
                 <param name="android-package" value="com.blakgeek.cordova.plugin.FirebaseDatabasePlugin" />
@@ -44,7 +47,7 @@
         <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseDatabasePlugin.java"
             target-dir="src/com/blakgeek/cordova/plugin/" />
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference" />
-        <framework src="com.google.firebase:firebase-database:9.4+" />
-        <framework src="com.google.code.gson:gson:2+"/>
+        <framework src="com.google.firebase:firebase-database:$FIREBASE_VERSION" />
+        <framework src="com.google.code.gson:gson:2.+"/>
     </platform>
 </plugin>
