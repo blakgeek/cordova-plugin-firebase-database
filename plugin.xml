@@ -19,7 +19,7 @@
         <engine name="cordova-plugman" version=">=4.2.0" />
     </engines>
 
-    <!--<dependency id="cordova-plugin-firebase-core"/>-->
+    <dependency id="cordova-plugin-firebase-core"/>
 
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
@@ -36,7 +36,7 @@
 
     <platform name="android">
 
-        <preference name="FIREBASE_VERSION" default="18.+"/>
+        <preference name="FIREBASE_VERSION" default="16.+"/>
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseDatabasePlugin">
