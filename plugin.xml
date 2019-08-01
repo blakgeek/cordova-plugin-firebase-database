@@ -31,7 +31,7 @@
         <source-file src="src/ios/FirebaseDatabasePlugin.m" />
         <source-file src="src/ios/ObserverRemover.h" />
         <source-file src="src/ios/ObserverRemover.m" />
-        <pod id="Firebase/Database" />
+        <pod id="Firebase/Database" version="~> 6" />
     </platform>
 
     <platform name="android">
