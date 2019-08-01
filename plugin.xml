@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"
-    id="cordova-plugin-firebase-database" version="1.0.2">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-firebase-database" version="1.1.1">
     <name>Firebase Realtime Database</name>
     <description>Adds native support for Firebase's realtime database to your Cordova/PhoneGap apps.</description>
     <license>Apache 2.0</license>
@@ -10,13 +9,13 @@
     <issue>https://github.com/blakgeek/cordova-plugin-firebase-database/issues</issue>
 
     <js-module src="www/firebaseDatabasePlugin.js" name="FirebaseDatabasePlugin">
-        <clobbers target="FirebaseDatabase" />
+        <clobbers target="FirebaseDatabase"/>
     </js-module>
 
     <engines>
-        <engine name="cordova" version=">=6.0.0" />
-        <engine name="cordova-android" version=">=4.0.0" />
-        <engine name="cordova-plugman" version=">=4.2.0" />
+        <engine name="cordova" version="&gt;=6.0.0"/>
+        <engine name="cordova-android" version="&gt;=4.0.0"/>
+        <engine name="cordova-plugman" version="&gt;=4.2.0"/>
     </engines>
 
     <dependency id="cordova-plugin-firebase-core"/>
@@ -24,14 +23,14 @@
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="FirebaseDatabasePlugin">
-                <param name="ios-package" value="FirebaseDatabasePlugin" />
+                <param name="ios-package" value="FirebaseDatabasePlugin"/>
             </feature>
         </config-file>
-        <header-file src="src/ios/FirebaseDatabasePlugin.h" />
-        <source-file src="src/ios/FirebaseDatabasePlugin.m" />
-        <source-file src="src/ios/ObserverRemover.h" />
-        <source-file src="src/ios/ObserverRemover.m" />
-        <pod id="Firebase/Database" version="~> 6" />
+        <header-file src="src/ios/FirebaseDatabasePlugin.h"/>
+        <source-file src="src/ios/FirebaseDatabasePlugin.m"/>
+        <source-file src="src/ios/ObserverRemover.h"/>
+        <source-file src="src/ios/ObserverRemover.m"/>
+        <pod id="Firebase/Database" version="~&gt; 6"/>
     </platform>
 
     <platform name="android">
@@ -40,14 +39,13 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="FirebaseDatabasePlugin">
-                <param name="android-package" value="com.blakgeek.cordova.plugin.FirebaseDatabasePlugin" />
+                <param name="android-package" value="com.blakgeek.cordova.plugin.FirebaseDatabasePlugin"/>
             </feature>
         </config-file>
 
-        <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseDatabasePlugin.java"
-            target-dir="src/com/blakgeek/cordova/plugin/" />
-        <framework src="src/android/plugin.gradle" custom="true" type="gradleReference" />
-        <framework src="com.google.firebase:firebase-database:$FIREBASE_VERSION" />
+        <source-file src="src/android/com/blakgeek/cordova/plugin/FirebaseDatabasePlugin.java" target-dir="src/com/blakgeek/cordova/plugin/"/>
+        <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
+        <framework src="com.google.firebase:firebase-database:$FIREBASE_VERSION"/>
         <framework src="com.google.code.gson:gson:2.+"/>
     </platform>
 </plugin>
