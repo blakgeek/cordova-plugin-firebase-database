@@ -13,9 +13,9 @@
     </js-module>
 
     <engines>
-        <engine name="cordova" version="&gt;=6.0.0"/>
-        <engine name="cordova-android" version="&gt;=4.0.0"/>
-        <engine name="cordova-plugman" version="&gt;=4.2.0"/>
+        <engine name="cordova" version=">=6.0.0"/>
+        <engine name="cordova-android" version=">=4.0.0"/>
+        <engine name="cordova-plugman" version=">=4.2.0"/>
     </engines>
 
     <dependency id="cordova-plugin-firebase-core"/>
